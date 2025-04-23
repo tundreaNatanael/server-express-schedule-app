@@ -14,6 +14,10 @@ router.post('/create/user', (req, res) => {
   res.status(200).send(req?.body);
 });
 
+router.put('/update/user/:id', (req, res) => {
+  res.status(200).send(req?.body);
+});
+
 router.delete('/delete/user/:id', (req, res) => {
   res.status(200).send(req?.params?.id);
 });

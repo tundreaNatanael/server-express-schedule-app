@@ -9,6 +9,7 @@
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
+    "format": "npm run prettier && npm run lint",
     "start": "node index.js"
   },
   "keywords": [],

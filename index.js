@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const apiRoutes = require('./routes/api');
 
 const app = express();
 
@@ -7,10 +8,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Sample route
-app.get('/api/message', (req, res) => {
-  res.json({ message: 'Hello from the backend!' });
-});
+// returns the users data
+app.use('/api', apiRoutes);
 
 // Start the server
 const PORT = 3000;

@@ -36,6 +36,12 @@ router.get('/bookings', (req, res) => {
       startDate: '2023-10-03',
       endDate: '2023-10-04',
     },
+    {
+      id: 3,
+      userId: 1,
+      startDate: '2023-8-01',
+      endDate: '2023-10-02',
+    },
   ]);
 });
 
@@ -49,6 +55,10 @@ router.delete('/delete/booking/:id', (req, res) => {
 
 router.get('/platform', (req, res) => {
   res.json(usePlatformData());
+});
+
+router.put('/update/platform', (req, res) => {
+  res.status(200).send(req?.body);
 });
 
 // Export the router

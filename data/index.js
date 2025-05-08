@@ -49,7 +49,7 @@ const getAllUsers = () => {
       firstname: 'David',
       lastname: 'Wilson',
       email: 'david.wilson@example.com',
-      role: 'user',
+      role: 'admin',
       nickname: 'davidw',
       emoji: '👨‍🏫',
       perWeekHours: 20,
@@ -116,7 +116,7 @@ const getAllUsers = () => {
 const usePlatformData = () => {
   return {
     maxPlatformDailyHours: 14,
-    maxPlatformWeeklyHours: 90,
+    maxPlatformWeeklyHours: 80,
     maxUserWeeklyHours: 3,
   };
 };

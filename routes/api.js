@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import { getAllUsers, getUser, usePlatformData } from '../data/index.js';
+
 const router = express.Router();
-const { getAllUsers, getUser, usePlatformData } = require('../data/index.js');
 
 router.get('/users', (req, res) => {
   res.json(getAllUsers());
@@ -51,5 +52,4 @@ router.get('/platform', (req, res) => {
   res.json(usePlatformData());
 });
 
-// Export the router
-module.exports = router;
+export default router;

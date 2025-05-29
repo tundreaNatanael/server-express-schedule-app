@@ -60,3 +60,40 @@ export const Users = sequelize.define(
     paranoid: false,
   }
 );
+
+export const Bookings = sequelize.define(
+  "Bookings",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
+    },
+    start: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Users,
+        key: "id",
+      },
+    },
+    duration_minutes: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    freezeTableName: true,
+    paranoid: false,
+  }
+);
+
+Users.hasMany(Bookings, { foreignKey: "user_id" });
+Bookings.belongsTo(Users, { foreignKey: "user_id" });

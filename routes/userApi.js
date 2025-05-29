@@ -3,13 +3,13 @@ import { Users } from "../db/db.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const userId = Number(req?.query?.id);
-  if (!userId || isNaN(userId)) {
+  const id = Number(req?.query?.id);
+  if (!id || isNaN(id)) {
     return res.status(400).send({ message: "Invalid user ID" });
   }
 
   const user = await Users.findOne({
-    where: { id: userId },
+    where: { id },
   });
 
   if (!user) {
@@ -63,7 +63,7 @@ router.patch("/update", async (req, res) => {
       ...(userType !== undefined && { user_type: userType }),
     },
     {
-      where: { id: id },
+      where: { id },
     }
   );
 
@@ -74,18 +74,18 @@ router.patch("/update", async (req, res) => {
 });
 
 router.delete("/delete", async (req, res) => {
-  const userId = Number(req.query?.id);
-  if (!userId || isNaN(userId)) {
+  const id = Number(req.query?.id);
+  if (!id || isNaN(id)) {
     return res.status(400).send({ message: "Invalid user ID" });
   }
 
   const response = await Users.destroy({
     where: {
-      id: userId,
+      id,
     },
   });
 
-  if (response) {
+  if (!response) {
     return res.status(404).send({ message: "User not found" });
   }
   return res.status(200).send({ message: "User successfully deleted" });

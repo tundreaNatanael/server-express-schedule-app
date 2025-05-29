@@ -1,6 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import apiRoutes from './routes/api.js';
+import express from "express";
+import cors from "cors";
+import apiRoutes from "./routes/api.js";
 
 const app = express();
 
@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // returns the users data
-app.use('/api', apiRoutes);
+app.use("/api", apiRoutes);
 
 // Start the server
 const PORT = 3000;

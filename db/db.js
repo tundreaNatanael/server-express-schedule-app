@@ -1,14 +1,14 @@
-import { Sequelize, DataTypes } from 'sequelize';
+import { Sequelize, DataTypes } from "sequelize";
 
 const db = {
-  NAME: 'schedule_app',
-  USERNAME: 'root',
-  PASSWORD: '',
+  NAME: "schedule_app",
+  USERNAME: "root",
+  PASSWORD: "",
 
   options: {
-    dialect: 'mysql',
-    timezone: '+00:00',
-    host: 'localhost',
+    dialect: "mysql",
+    timezone: "+00:00",
+    host: "localhost",
     port: 3306,
     logging: function (str) {
       console.log(str);
@@ -24,7 +24,7 @@ export const sequelize = new Sequelize(
 );
 
 export const Users = sequelize.define(
-  'Users',
+  "Users",
   {
     id: {
       type: DataTypes.INTEGER,

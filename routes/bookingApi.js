@@ -42,7 +42,9 @@ router.post("/create", async (req, res) => {
   });
 
   if (!newBooking) {
-    return res.status(500).send({ message: "Failed to create booking" });
+    return res
+      .status(500)
+      .send({ message: "Failed to create the new booking." });
   }
   return res.status(200).json(newBooking);
 });

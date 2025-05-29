@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 
 router.get("/all", async (req, res) => {
   const users = await Users.findAll({
-    order: [["lastname", "DESC"]],
+    order: [["lastname", "ASC"]],
   });
 
   if (!users || users.length === 0) {
@@ -42,7 +42,7 @@ router.post("/create", async (req, res) => {
   });
 
   if (!newUser) {
-    return res.status(500).send({ message: "Failed to create user" });
+    return res.status(500).send({ message: "Failed to create the new user." });
   }
   return res.status(200).json(newUser);
 });

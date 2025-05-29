@@ -135,8 +135,4 @@ const getUser = (id) => {
   return user;
 };
 
-module.exports = {
-  getUser,
-  getAllUsers,
-  usePlatformData,
-};
+export { getUser, getAllUsers, usePlatformData };

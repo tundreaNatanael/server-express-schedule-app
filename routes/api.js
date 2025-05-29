@@ -1,25 +1,42 @@
-const express = require('express');
+import express from 'express';
+import { getUser, usePlatformData } from '../data/index.js';
+import { Users } from '../db/db.js';
 const router = express.Router();
-const { getAllUsers, getUser, usePlatformData } = require('../data/index.js');
 
-router.get('/users', (req, res) => {
-  res.json(getAllUsers());
+router.get('/users', async (req, res) => {
+  const users = await Users.findAll({
+    attributes: ['firstname', 'lastname'],
+    order: [['lastname', 'DESC']],
+  });
+  res.json(users);
 });
 
 router.get('/user/:id', (req, res) => {
   res.json(getUser(Number(req?.params?.id)));
 });
 
-router.post('/create/user', (req, res) => {
-  res.status(200).send(req?.body);
+router.post('/create/user', async (req, res) => {
+  const { firstname, lastname, userType } = req.body;
+  const newUser = await Users.create({
+    firstname,
+    lastname,
+    user_type: userType,
+  });
+  res.status(200).send(newUser);
 });
 
 router.put('/update/user/:id', (req, res) => {
   res.status(200).send(req?.body);
 });
 
-router.delete('/delete/user/:id', (req, res) => {
-  res.status(200).send(req?.params?.id);
+router.delete('/delete/user', async (req, res) => {
+  const userId = Number(req?.body?.id);
+  const resDeletedUser = await Users.destroy({
+    where: {
+      id: userId,
+    },
+  });
+  res.status(200).send(resDeletedUser);
 });
 
 router.get('/bookings', (req, res) => {
@@ -61,5 +78,4 @@ router.put('/update/platform', (req, res) => {
   res.status(200).send(req?.body);
 });
 
-// Export the router
-module.exports = router;
+export default router;

@@ -8,6 +8,6 @@ export default defineConfig([
     plugins: { js },
     extends: ['js/recommended'],
   },
-  { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
+  { files: ['**/*.js'], languageOptions: { sourceType: 'module' } },
   { files: ['**/*.{js,mjs,cjs}'], languageOptions: { globals: globals.node } },
 ]);

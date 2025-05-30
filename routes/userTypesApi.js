@@ -3,7 +3,7 @@ import { UserTypes } from "../db/db.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const id = Number(req?.query?.id);
+  const id = Number(req.query?.id);
   if (!id || isNaN(id)) {
     return res.status(400).send({ message: "Invalid user type ID" });
   }

@@ -1,9 +1,11 @@
 import express from "express";
+import { Op } from "sequelize";
+
 import { Bookings } from "../db/db.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const id = Number(req?.query?.id);
+  const id = Number(req.query?.id);
   if (!id || isNaN(id)) {
     return res.status(400).send({ message: "Invalid booking ID" });
   }
@@ -16,6 +18,28 @@ router.get("/", async (req, res) => {
     return res.status(404).send({ message: "Booking not found" });
   }
   return res.status(200).json(booking);
+});
+
+router.get("/range", async (req, res) => {
+  const { start, end } = req.body;
+  if (!start || !end) {
+    return res.status(400).send({ message: "Missing start or end date" });
+  }
+
+  const bookings = await Bookings.findAll({
+    where: {
+      start: {
+        [Op.gte]: start,
+        [Op.lte]: end,
+      },
+    },
+    order: [["start", "DESC"]],
+  });
+
+  if (!bookings || bookings.length === 0) {
+    return res.status(200).send({ message: "No bookings found in range" });
+  }
+  return res.status(200).json(bookings);
 });
 
 router.get("/all", async (req, res) => {

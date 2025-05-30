@@ -1,5 +1,5 @@
 import express from "express";
-import { Users } from "../db/db.js";
+import { Users, UserTypes } from "../db/db.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -10,23 +10,64 @@ router.get("/", async (req, res) => {
 
   const user = await Users.findOne({
     where: { id },
+    attributes: ["id", "firstname", "lastname", "createdAt"],
+    include: [
+      {
+        model: UserTypes,
+        attributes: ["id", "name", "nr_minutes_per_week"],
+      },
+    ],
   });
 
   if (!user) {
     return res.status(404).send({ message: "User not found" });
   }
-  return res.status(200).json(user);
+
+  return res.status(200).json({
+    id: user.id,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    createdAt: user.createdAt,
+    userType: user.User_Type
+      ? {
+          id: user.User_Type.id,
+          name: user.User_Type.name,
+          nrMinutesPerWeek: user.User_Type.nr_minutes_per_week,
+        }
+      : null,
+  });
 });
 
 router.get("/all", async (req, res) => {
   const users = await Users.findAll({
     order: [["lastname", "ASC"]],
+    attributes: ["id", "firstname", "lastname", "createdAt"],
+    include: [
+      {
+        model: UserTypes,
+        attributes: ["id", "name", "nr_minutes_per_week"],
+      },
+    ],
   });
 
   if (!users || users.length === 0) {
     return res.status(200).send({ message: "No users found" });
   }
-  return res.status(200).json(users);
+  return res.status(200).json(
+    users.map((user) => ({
+      id: user.id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      createdAt: user.createdAt,
+      userType: user.User_Type
+        ? {
+            id: user.User_Type.id,
+            name: user.User_Type.name,
+            nrMinutesPerWeek: user.User_Type.nr_minutes_per_week,
+          }
+        : null,
+    }))
+  );
 });
 
 router.post("/create", async (req, res) => {
@@ -44,7 +85,7 @@ router.post("/create", async (req, res) => {
   if (!newUser) {
     return res.status(500).send({ message: "Failed to create the new user." });
   }
-  return res.status(200).json(newUser);
+  return res.status(200).json({ message: "User succesfully created" });
 });
 
 router.patch("/update", async (req, res) => {

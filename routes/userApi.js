@@ -1,5 +1,5 @@
 import express from "express";
-import { Users } from "../db/db.js";
+import { Users, UserTypes } from "../db/db.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -10,6 +10,13 @@ router.get("/", async (req, res) => {
 
   const user = await Users.findOne({
     where: { id },
+    attributes: ["id", "firstname", "lastname", "createdAt"],
+    include: [
+      {
+        model: UserTypes,
+        attributes: ["id", "name", "nr_minutes_per_week"],
+      },
+    ],
   });
 
   if (!user) {
@@ -21,6 +28,13 @@ router.get("/", async (req, res) => {
 router.get("/all", async (req, res) => {
   const users = await Users.findAll({
     order: [["lastname", "ASC"]],
+    attributes: ["id", "firstname", "lastname", "createdAt"],
+    include: [
+      {
+        model: UserTypes,
+        attributes: ["id", "name", "nr_minutes_per_week"],
+      },
+    ],
   });
 
   if (!users || users.length === 0) {

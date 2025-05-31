@@ -125,4 +125,5 @@ export const UserTypes = sequelize.define(
 
 Users.belongsTo(UserTypes, { foreignKey: "user_type", targetKey: "id" });
 UserTypes.hasMany(Users, { foreignKey: "user_type", sourceKey: "id" });
-Bookings.belongsTo(Users, { foreignKey: "user_id" });
+Bookings.belongsTo(Users, { foreignKey: "user_id", targetKey: "id" });
+Users.hasMany(Bookings, { foreignKey: "user_id", sourceKey: "id" });

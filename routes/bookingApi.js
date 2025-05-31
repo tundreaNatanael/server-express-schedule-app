@@ -116,14 +116,14 @@ router.get("/all", async (req, res) => {
 });
 
 router.post("/create", async (req, res) => {
-  const { start, userId, durationMinutes } = req.body;
-  if (!start || !userId || !durationMinutes) {
+  const { userId, start, durationMinutes } = req.body;
+  if (!userId || !start || !durationMinutes) {
     return res.status(400).send({ message: "Missing fields" });
   }
 
   const newBooking = await Bookings.create({
-    start,
     user_id: userId,
+    start,
     duration_minutes: durationMinutes,
   });
 

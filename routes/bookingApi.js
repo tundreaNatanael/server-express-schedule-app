@@ -98,8 +98,6 @@ router.get("/all", async (req, res) => {
     return res.status(200).send({ message: "No bookings found" });
   }
 
-  console.log("Bookings found:", bookings);
-
   return res.status(200).json(
     bookings.map((booking) => ({
       id: booking.id,

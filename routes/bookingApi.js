@@ -1,7 +1,7 @@
 import express from "express";
 import { Op } from "sequelize";
 
-import { Bookings } from "../db/db.js";
+import { Bookings, Users } from "../db/db.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -12,12 +12,31 @@ router.get("/", async (req, res) => {
 
   const booking = await Bookings.findOne({
     where: { id },
+    attributes: ["id", "start", "duration_minutes", "createdAt"],
+    include: [
+      {
+        model: Users,
+        attributes: ["id", "firstname", "lastname"],
+      },
+    ],
   });
 
   if (!booking) {
     return res.status(404).send({ message: "Booking not found" });
   }
-  return res.status(200).json(booking);
+  return res.status(200).json({
+    id: booking.id,
+    start: booking.start,
+    durationMinutes: booking.duration_minutes,
+    createdAt: booking.createdAt,
+    user: booking.User
+      ? {
+          id: booking.User.id,
+          firstname: booking.User.firstname,
+          lastname: booking.User.lastname,
+        }
+      : null,
+  });
 });
 
 router.get("/range", async (req, res) => {
@@ -34,23 +53,68 @@ router.get("/range", async (req, res) => {
       },
     },
     order: [["start", "DESC"]],
+    attributes: ["id", "start", "duration_minutes", "createdAt"],
+    include: [
+      {
+        model: Users,
+        attributes: ["id", "firstname", "lastname"],
+      },
+    ],
   });
 
   if (!bookings || bookings.length === 0) {
     return res.status(200).send({ message: "No bookings found in range" });
   }
-  return res.status(200).json(bookings);
+  return res.status(200).json(
+    bookings.map((booking) => ({
+      id: booking.id,
+      start: booking.start,
+      durationMinutes: booking.duration_minutes,
+      createdAt: booking.createdAt,
+      user: booking.User
+        ? {
+            id: booking.User.id,
+            firstname: booking.User.firstname,
+            lastname: booking.User.lastname,
+          }
+        : null,
+    }))
+  );
 });
 
 router.get("/all", async (req, res) => {
   const bookings = await Bookings.findAll({
     order: [["start", "DESC"]],
+    attributes: ["id", "start", "duration_minutes", "createdAt"],
+    include: [
+      {
+        model: Users,
+        attributes: ["id", "firstname", "lastname"],
+      },
+    ],
   });
 
   if (!bookings || bookings.length === 0) {
     return res.status(200).send({ message: "No bookings found" });
   }
-  return res.status(200).json(bookings);
+
+  console.log("Bookings found:", bookings);
+
+  return res.status(200).json(
+    bookings.map((booking) => ({
+      id: booking.id,
+      start: booking.start,
+      durationMinutes: booking.duration_minutes,
+      createdAt: booking.createdAt,
+      user: booking.User
+        ? {
+            id: booking.User.id,
+            firstname: booking.User.firstname,
+            lastname: booking.User.lastname,
+          }
+        : null,
+    }))
+  );
 });
 
 router.post("/create", async (req, res) => {

@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
 
   const user = await Users.findOne({
     where: { id },
-    attributes: ["id", "firstname", "lastname", "createdAt"],
+    attributes: ["id", "firstname", "lastname", "email", "createdAt"],
     include: [
       {
         model: UserTypes,
@@ -27,6 +27,7 @@ router.get("/", async (req, res) => {
     id: user.id,
     firstname: user.firstname,
     lastname: user.lastname,
+    email: user.email,
     createdAt: user.createdAt,
     userType: user.User_Type
       ? {
@@ -41,7 +42,7 @@ router.get("/", async (req, res) => {
 router.get("/all", async (req, res) => {
   const users = await Users.findAll({
     order: [["lastname", "ASC"]],
-    attributes: ["id", "firstname", "lastname", "createdAt"],
+    attributes: ["id", "firstname", "lastname", "email", "createdAt"],
     include: [
       {
         model: UserTypes,
@@ -58,6 +59,7 @@ router.get("/all", async (req, res) => {
       id: user.id,
       firstname: user.firstname,
       lastname: user.lastname,
+      email: user.email,
       createdAt: user.createdAt,
       userType: user.User_Type
         ? {
@@ -71,14 +73,15 @@ router.get("/all", async (req, res) => {
 });
 
 router.post("/create", async (req, res) => {
-  const { firstname, lastname, userType } = req.body;
-  if (!firstname || !lastname || !userType) {
+  const { firstname, lastname, email, userType } = req.body;
+  if (!firstname || !lastname || !email || !userType) {
     return res.status(400).send({ message: "Missing fields" });
   }
 
   const newUser = await Users.create({
     firstname,
     lastname,
+    email,
     user_type: userType,
   });
 
@@ -89,11 +92,11 @@ router.post("/create", async (req, res) => {
 });
 
 router.patch("/update", async (req, res) => {
-  const { id, firstname, lastname, userType } = req.body;
+  const { id, firstname, lastname, email, userType } = req.body;
   if (!id || isNaN(id)) {
     return res.status(400).send({ message: "Invalid or missing user ID" });
   }
-  if (!(firstname || lastname || userType)) {
+  if (!(firstname || lastname || email || userType)) {
     return res.status(400).send({ message: "No updates fields" });
   }
 
@@ -101,6 +104,7 @@ router.patch("/update", async (req, res) => {
     {
       ...(firstname !== undefined && { firstname }),
       ...(lastname !== undefined && { lastname }),
+      ...(email !== undefined && { email }),
       ...(userType !== undefined && { user_type: userType }),
     },
     {

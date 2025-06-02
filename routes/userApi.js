@@ -1,5 +1,6 @@
 import express from "express";
 import { Users, UserTypes } from "../db/db.js";
+import { literal } from "sequelize";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -10,7 +11,21 @@ router.get("/", async (req, res) => {
 
   const user = await Users.findOne({
     where: { id },
-    attributes: ["id", "firstname", "lastname", "email", "createdAt"],
+    attributes: [
+      "id",
+      "firstname",
+      "lastname",
+      "email",
+      "createdAt",
+      [
+        literal(`(
+          SELECT COALESCE(SUM(duration_minutes), 0)
+          FROM Bookings
+          WHERE Bookings.user_id = Users.id
+        )`),
+        "sumUsedMinutes",
+      ],
+    ],
     include: [
       {
         model: UserTypes,
@@ -36,13 +51,28 @@ router.get("/", async (req, res) => {
           nrMinutesPerWeek: user.User_Type.nr_minutes_per_week,
         }
       : null,
+    sumUsedMinutes: Number(user.dataValues.sumUsedMinutes) || 0,
   });
 });
 
 router.get("/all", async (req, res) => {
   const users = await Users.findAll({
     order: [["lastname", "ASC"]],
-    attributes: ["id", "firstname", "lastname", "email", "createdAt"],
+    attributes: [
+      "id",
+      "firstname",
+      "lastname",
+      "email",
+      "createdAt",
+      [
+        literal(`(
+          SELECT COALESCE(SUM(\`duration_minutes\`), 0)
+          FROM \`Bookings\`
+          WHERE \`Bookings\`.\`user_id\` = \`Users\`.\`id\`
+        )`),
+        "sumUsedMinutes",
+      ],
+    ],
     include: [
       {
         model: UserTypes,
@@ -68,6 +98,7 @@ router.get("/all", async (req, res) => {
             nrMinutesPerWeek: user.User_Type.nr_minutes_per_week,
           }
         : null,
+      sumUsedMinutes: Number(user.dataValues.sumUsedMinutes) || 0,
     }))
   );
 });

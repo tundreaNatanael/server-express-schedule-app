@@ -46,6 +46,13 @@ export const Users = sequelize.define(
         notEmpty: true,
       },
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     user_type: {
       type: DataTypes.INTEGER,
       allowNull: false,

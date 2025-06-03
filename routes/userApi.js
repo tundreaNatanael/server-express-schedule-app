@@ -131,6 +131,8 @@ router.patch("/update", async (req, res) => {
     return res.status(400).send({ message: "No updates fields" });
   }
 
+  const sequelize = Users.sequelize;
+  const transaction = await sequelize.transaction();
   const response = await Users.update(
     {
       ...(firstname !== undefined && { firstname }),
@@ -140,10 +142,12 @@ router.patch("/update", async (req, res) => {
     },
     {
       where: { id },
-    }
+    },
+    transaction
   );
 
   if (!response[0]) {
+    await transaction.rollback();
     return res.status(404).send({ message: "User not found" });
   }
   return res.status(200).send({ message: "User successfully updated" });

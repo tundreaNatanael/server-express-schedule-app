@@ -4,7 +4,7 @@ import { literal } from "sequelize";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const id = Number(req.params?.id);
+  const id = Number(req.query?.id);
   if (!id || isNaN(id)) {
     return res.status(400).send({ message: "Invalid user ID" });
   }

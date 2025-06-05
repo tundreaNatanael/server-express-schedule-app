@@ -130,6 +130,34 @@ export const UserTypes = sequelize.define(
   }
 );
 
+export const PlatformData = sequelize.define(
+  "platform_data",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
+    },
+    item: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    value: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    freezeTableName: true,
+    paranoid: false,
+  }
+);
+
 Users.belongsTo(UserTypes, { foreignKey: "user_type", targetKey: "id" });
 UserTypes.hasMany(Users, { foreignKey: "user_type", sourceKey: "id" });
 Bookings.belongsTo(Users, { foreignKey: "user_id", targetKey: "id" });

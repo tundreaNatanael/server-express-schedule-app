@@ -6,6 +6,12 @@ To install the project dependencies, run:
 npm install
 ```
 
+To run the backend server project, run:
+
+```bash
+npm run start
+```
+
 ### Running Cypress Tests
 
 Cypress tests in this project are focused only on the user routes.
@@ -15,11 +21,12 @@ Cypress tests in this project are focused only on the user routes.
 You can run Cypress tests using the following scripts:
 
 - To run all Cypress tests in headless mode:
-    ```bash
-    npm run cypress:run
-    ```
+
+  ```bash
+  npm run cypress:run
+  ```
 
 - To open the Cypress Test Runner in interactive mode:
-    ```bash
-    npm run cypress:open
-    ```
+  ```bash
+  npm run cypress:open
+  ```

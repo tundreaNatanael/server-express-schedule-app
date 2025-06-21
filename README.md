@@ -6,7 +6,7 @@ To install the project dependencies, run:
 npm install
 ```
 
-To run the backend server project, run:
+To start the backend server project, run:
 
 ```bash
 npm run start

@@ -11,7 +11,9 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "format": "npm run prettier && npm run lint",
-    "start": "node index.js"
+    "start": "node index.js",
+    "cypress:run": "npx cypress run",
+    "cypress:open": "npx cypress open"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,11 @@
 ## Getting Started
 
+To go to the cy-api-testing branch
+
+```bash
+git checkout cy-api-testing
+```
+
 To install the project dependencies, run:
 
 ```bash
@@ -30,3 +36,8 @@ You can run Cypress tests using the following scripts:
   ```bash
   npm run cypress:open
   ```
+
+  1.Go to E2e testing
+  2.Select your browser
+  3.Each file cotains a test click on it to test it
+

@@ -38,6 +38,8 @@ You can run Cypress tests using the following scripts:
   ```
 
   1.Go to E2e testing
+
   2.Select your browser
+  
   3.Each file cotains a test click on it to test it
 
